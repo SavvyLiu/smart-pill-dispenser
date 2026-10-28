@@ -1,0 +1,261 @@
+{
+  "run_at_utc": "2026-10-28T21:17:30.037199+00:00",
+  "source_commit": "9b2a71e424c3e5a05072a172ba86f517e3ee8860",
+  "working_tree_dirty": true,
+  "python": "3.12.4",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "pyserial": "3.5",
+  "transport": "localhost TCP via pySerial socket://; not physical serial",
+  "controller": "separate Python subprocess; proposed protocol v1; six illustrative compartments",
+  "cases": [
+    {
+      "name": "round-trip",
+      "expected": "Two programs exchange OPEN/CLOSE and validate responses",
+      "observed": "OPEN -> OPENED; CLOSE -> CLOSED",
+      "wire_log": [
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "demo-open",
+            "command": "OPEN",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"demo-open\",\"command\":\"OPEN\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "demo-close",
+            "command": "CLOSE",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"demo-close\",\"command\":\"CLOSE\",\"compartment\":\"compartment_1\",\"state\":\"CLOSED\",\"actuation_count\":2}\n"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "duplicate",
+      "expected": "Same ID and payload do not repeat a simulated actuation",
+      "observed": "Identical request replayed; simulated actuation count remained 1",
+      "wire_log": [
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "same-command",
+            "command": "OPEN",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"same-command\",\"command\":\"OPEN\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "same-command",
+            "command": "OPEN",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"same-command\",\"command\":\"OPEN\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "timeout",
+      "expected": "Lost acknowledgment is unresolved, not retried",
+      "observed": "No reply before timeout; operation outcome is unknown; no automatic retry; new OPEN blocked; reconnect + STATUS found OPENED; CLOSE succeeded",
+      "wire_log": [
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "fault-timeout",
+            "command": "OPEN",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "c379a5f712b345759cdf8075c8dabde7",
+            "command": "STATUS",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"c379a5f712b345759cdf8075c8dabde7\",\"command\":\"STATUS\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "2503287f73ca433a99dbd42794e1fc2b",
+            "command": "CLOSE",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"2503287f73ca433a99dbd42794e1fc2b\",\"command\":\"CLOSE\",\"compartment\":\"compartment_1\",\"state\":\"CLOSED\",\"actuation_count\":2}\n"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "malformed",
+      "expected": "Malformed response is rejected",
+      "observed": "Invalid UTF-8 or JSON; no automatic retry; new OPEN blocked; reconnect + STATUS found OPENED; CLOSE succeeded",
+      "wire_log": [
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "fault-malformed",
+            "command": "OPEN",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{not-json}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "d13edbb914eb4a5ebca00d73d795a060",
+            "command": "STATUS",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"d13edbb914eb4a5ebca00d73d795a060\",\"command\":\"STATUS\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "48037918bd80490c917353d0f1c29d37",
+            "command": "CLOSE",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"48037918bd80490c917353d0f1c29d37\",\"command\":\"CLOSE\",\"compartment\":\"compartment_1\",\"state\":\"CLOSED\",\"actuation_count\":2}\n"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "wrong-id",
+      "expected": "Unrelated response is rejected",
+      "observed": "Response id does not match the request; no automatic retry; new OPEN blocked; reconnect + STATUS found OPENED; CLOSE succeeded",
+      "wire_log": [
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "fault-wrong-id",
+            "command": "OPEN",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"unrelated-response\",\"command\":\"OPEN\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "a1725f4b2c124d37b967e4658bcb8d87",
+            "command": "STATUS",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"a1725f4b2c124d37b967e4658bcb8d87\",\"command\":\"STATUS\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "f98dfd83b81e411d8f4030e9b8a58dd5",
+            "command": "CLOSE",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"f98dfd83b81e411d8f4030e9b8a58dd5\",\"command\":\"CLOSE\",\"compartment\":\"compartment_1\",\"state\":\"CLOSED\",\"actuation_count\":2}\n"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "disconnect",
+      "expected": "Connection loss is unresolved and can be queried after reconnect",
+      "observed": "Connection failed: read failed: socket disconnected; no automatic retry; new OPEN blocked; reconnect + STATUS found OPENED; CLOSE succeeded",
+      "wire_log": [
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "fault-disconnect",
+            "command": "OPEN",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "e4873619098443c9b1fd19e87aea6e8d",
+            "command": "STATUS",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"e4873619098443c9b1fd19e87aea6e8d\",\"command\":\"STATUS\",\"compartment\":\"compartment_1\",\"state\":\"OPENED\",\"actuation_count\":1}\n"
+        },
+        {
+          "direction": "TX",
+          "message": {
+            "v": 1,
+            "id": "72cb1f9478a4403eabd7c8aa83bbec7c",
+            "command": "CLOSE",
+            "compartment": "compartment_1"
+          }
+        },
+        {
+          "direction": "RX",
+          "raw": "{\"v\":1,\"id\":\"72cb1f9478a4403eabd7c8aa83bbec7c\",\"command\":\"CLOSE\",\"compartment\":\"compartment_1\",\"state\":\"CLOSED\",\"actuation_count\":2}\n"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,22 @@
+test_demonstration_scenarios (test_link.ProcessIntegrationTests.test_demonstration_scenarios) ... ok
+test_bad_frames (test_link.ProtocolTests.test_bad_frames) ... ok
+test_fragmented_and_coalesced_frames (test_link.ProtocolTests.test_fragmented_and_coalesced_frames) ... ok
+test_id_collision_does_not_actuate (test_link.ProtocolTests.test_id_collision_does_not_actuate) ... ok
+test_invalid_command_fields (test_link.ProtocolTests.test_invalid_command_fields) ... ok
+test_invalid_command_is_not_transmitted (test_link.ProtocolTests.test_invalid_command_is_not_transmitted) ... ok
+test_invalid_response_is_not_success (test_link.ProtocolTests.test_invalid_response_is_not_success) ... ok
+test_replay_cache_is_bounded (test_link.ProtocolTests.test_replay_cache_is_bounded) ... ok
+test_status_is_read_only (test_link.ProtocolTests.test_status_is_read_only) ... ok
+test_timeout_must_be_finite_and_positive (test_link.ProtocolTests.test_timeout_must_be_finite_and_positive) ... ok
+test_default_is_localhost (test_server.VisualServerTests.test_default_is_localhost) ... ok
+test_events_follow_real_messages (test_server.VisualServerTests.test_events_follow_real_messages) ... ok
+test_optional_network_bind (test_server.VisualServerTests.test_optional_network_bind) ... ok
+test_rearming_drop_reply_and_reconnect (test_server.VisualServerTests.test_rearming_drop_reply_and_reconnect) ... ok
+test_reset_peer_does_not_kill_listener (test_server.VisualServerTests.test_reset_peer_does_not_kill_listener) ... ok
+test_stop_closes_active_connection (test_server.VisualServerTests.test_stop_closes_active_connection) ... ok
+test_stop_start_can_preserve_model (test_server.VisualServerTests.test_stop_start_can_preserve_model) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 7.494s
+
+OK
