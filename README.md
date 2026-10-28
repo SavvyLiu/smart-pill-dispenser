@@ -4,7 +4,7 @@ Code and engineering change tracking for our smart pill dispenser project.
 
 ## Software feasibility experiments
 
-- [Controller communication](experiments/controller-link/README.md): run a host program and a separate simulated controller; check command exchanges and missing/invalid replies. No hardware is required. This tests software communication over localhost, not a physical serial connection or dispenser mechanism.
+- [Controller communication](experiments/controller-link/README.md): run a host program and a separate simulated controller; check command exchanges and missing/invalid replies. Includes two small visual applications for meetings and an optional second-computer connection. No board is required; physical serial and the mechanism remain untested.
 
 ## Working pattern
 

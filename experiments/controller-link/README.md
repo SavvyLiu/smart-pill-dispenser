@@ -4,6 +4,14 @@
 
 This is a small software experiment, not a dispenser prototype. It includes no medication scheduling, dispensing mechanism, sensor integration, or patient data.
 
+## Visual demo for a meeting
+
+Double-click **run-visual.cmd** on Windows, or run `python launch_visual.py` after installing the requirements. This opens **two independent desktop applications**: Host console and Controller simulator. Click **Start listening** on the controller, then **Connect** on the host. Press **Open**, **Close**, or **Check status** and compare the matching message IDs in both windows.
+
+The controller draws a virtual compartment; it does not operate a motor. The host updates its confirmed state only from a validated response. There is no shared state or direct UI callback between the applications. The small process number in each footer helps distinguish them.
+
+See [the short visual walkthrough](VISUAL-DEMO.md) for the optional second-computer setup and a one-checkbox lost-reply test. The existing automated CLI experiment is still available below.
+
 ## Assumption and boundary
 
 We provisionally assume a future controller accepts newline-delimited messages over a bidirectional byte stream. No controller, display, board, operating system, or firmware protocol has been selected by this experiment.
@@ -92,7 +100,7 @@ Within the simulator process, a cache retains the most recent 256 request IDs an
 - An ambiguous OPEN/CLOSE marks that compartment unresolved **in the current Client instance**. Another operation on it is blocked until reconnection and a valid STATUS reply. A failed STATUS does not clear the flag.
 - This process-local flag is lost if the client program exits. The one-command CLI starts a new client each time; it does not provide cross-process protection. Restart recovery, durable transaction tracking, and device reset behavior are outside this experiment.
 - Simulated OPENED/CLOSED states are not sensor observations. STATUS reconciliation only queries the simulator's state. Actual hardware would need trustworthy status reporting and separately tested reconciliation behavior.
-- The simulator is sequential, supports one client at a time, and starts with all six compartments CLOSED. It is a lab tool with no authentication or encryption; it is bound to localhost.
+- The simulator is sequential, supports one client at a time, and starts with all six compartments CLOSED. It is a lab tool with no authentication or encryption; it binds to localhost by default. The visual controller's LAN checkbox (or CLI `--bind 0.0.0.0`) explicitly enables connections from another computer on a trusted local network.
 - No compatibility with a specific board, USB driver, electrical serial settings, sensor, pill mechanism, embedded runtime, or deployment platform is established.
 
 ## Automated verification

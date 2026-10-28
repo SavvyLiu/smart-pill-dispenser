@@ -23,13 +23,18 @@ class UnresolvedOperation(LinkError):
 
 
 class Client:
-    def __init__(self, port, timeout=1.0, baudrate=115200):
+    def __init__(self, port, timeout=1.0, baudrate=115200, on_event=None):
         if not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("Timeout must be a positive finite number")
         self.port, self.timeout, self.baudrate = port, timeout, baudrate
         self.connection = None
         self.unresolved = set()
         self.events = []
+        self.on_event = on_event or (lambda event: None)
+
+    def record(self, event):
+        self.events.append(event)
+        self.on_event(event)
 
     def connect(self):
         self.close()
@@ -57,14 +62,14 @@ class Client:
         if self.connection is None:
             raise LinkError("Connect before sending a command")
         try:
-            self.events.append({"direction": "TX", "message": request})
+            self.record({"direction": "TX", "message": request})
             raw = encode(request)
             if self.connection.write(raw) != len(raw):
                 raise LinkError("Incomplete write")
             response_raw = self.connection.read_until(b"\n", MAX_FRAME + 1)
             if not response_raw:
                 raise ResponseTimeout("No reply before timeout; operation outcome is unknown")
-            self.events.append({"direction": "RX", "raw": response_raw.decode("utf-8", errors="replace")})
+            self.record({"direction": "RX", "raw": response_raw.decode("utf-8", errors="replace")})
             response = decode(response_raw)
             validate_response(response, request)
         except (serial.SerialException, OSError, ProtocolError, LinkError) as exc:
