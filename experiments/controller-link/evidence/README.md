@@ -2,7 +2,7 @@
 
 Date: October 28, 2026 (America/Toronto).
 
-Tested source commit: `2a52e79b5bd32f264e77e0e4319cd38c47cee142`, with a clean working tree before the run. Subsequent documentation/evidence commits do not change the tested Python source.
+Tested source commit: `2a52e79b5bd32f264e77e0e4319cd38c47cee142`, with a clean working tree before the run. Subsequent documentation, evidence and CI updates do not change the tested Python source.
 
 Starting configuration: Windows, Python 3.12.4, pySerial 3.5 installed into a fresh virtual environment from requirements.txt. The host connected via pySerial's localhost TCP handler to a separate Python simulator process. Each scenario used a fresh simulator; fault cases retained that simulator across reconnects.
 
