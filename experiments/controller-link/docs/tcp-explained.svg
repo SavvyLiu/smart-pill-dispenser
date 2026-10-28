@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">How our command reaches the controller</title>
+  <desc id="description">The host creates an OPEN command. TCP carries the bytes to the listening program's socket receive buffer in memory. Controller code reads, validates and acts on the command, then sends a reply with the same ID. In this demo the action changes a virtual compartment, not a physical motor.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#087f75"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f1f4f6"/>
+  <g font-family="Segoe UI,Arial,sans-serif" fill="#162a39">
+    <text x="40" y="60" font-size="34" font-weight="700">How our command reaches the controller</text>
+    <text x="40" y="99" font-size="22" fill="#526573">TCP carries bytes. The receiving program decides what to do with them.</text>
+
+    <rect x="40" y="142" width="310" height="300" rx="14" fill="#ffffff"/>
+    <text x="64" y="180" font-size="17" font-weight="700" fill="#087f75">1 / HOST APPLICATION</text>
+    <text x="64" y="221" font-size="26" font-weight="700">You press Open</text>
+    <text x="64" y="257" font-size="19">The host creates a command:</text>
+    <rect x="64" y="278" width="262" height="100" rx="8" fill="#eef6f4"/>
+    <text x="82" y="309" font-size="21" font-weight="700">OPEN compartment_1</text>
+    <text x="82" y="342" font-size="20">Request ID: abc123</text>
+    <text x="64" y="412" font-size="18" fill="#526573">Sent as JSON text + a newline.</text>
+
+    <path d="M 358 291 H 411" fill="none" stroke="#087f75" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="425" y="142" width="270" height="300" rx="14" fill="#e1eeed"/>
+    <text x="449" y="180" font-size="17" font-weight="700" fill="#087f75">2 / TCP CONNECTION</text>
+    <text x="449" y="221" font-size="26" font-weight="700">Send the bytes</text>
+    <text x="449" y="270" font-size="19">IP address</text>
+    <text x="449" y="298" font-size="19" fill="#526573">Which computer?</text>
+    <text x="449" y="342" font-size="19">Port 8765</text>
+    <text x="449" y="370" font-size="19" fill="#526573">Which listening endpoint?</text>
+    <text x="449" y="412" font-size="18" fill="#526573">An ordered stream of bytes.</text>
+
+    <path d="M 703 291 H 766" fill="none" stroke="#087f75" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="780" y="142" width="460" height="300" rx="14" fill="#ffffff"/>
+    <text x="804" y="180" font-size="17" font-weight="700" fill="#087f75">3 / CONTROLLER APPLICATION</text>
+    <text x="804" y="221" font-size="26" font-weight="700">Receive, read, act</text>
+    <text x="804" y="264" font-size="20">Bytes arrive in a receive buffer</text>
+    <text x="804" y="292" font-size="19" fill="#526573">in memory, accessed through a socket.</text>
+    <path d="M 821 309 V 331" fill="none" stroke="#087f75" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="804" y="362" font-size="20">Code reads and checks the command.</text>
+    <text x="804" y="404" font-size="20" font-weight="700">Set simulated state to OPENED.</text>
+
+    <path d="M 1010 450 V 512 H 195 V 450" fill="none" stroke="#087f75" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="390" y="466" width="438" height="71" rx="10" fill="#f1f4f6"/>
+    <text x="609" y="490" text-anchor="middle" font-size="22" font-weight="700">4 / Reply: abc123 reports OPENED</text>
+    <text x="609" y="522" text-anchor="middle" font-size="19" fill="#526573">The host validates the reply, then confirms.</text>
+
+    <rect x="40" y="571" width="1200" height="108" rx="12" fill="#162a39"/>
+    <text x="64" y="609" font-size="21" fill="#ffffff"><tspan font-weight="700">In our demo:</tspan> controller code changes a virtual compartment.</text>
+    <text x="64" y="647" font-size="20" fill="#cfdae0"><tspan font-weight="700">On real hardware:</tspan> firmware would drive a motor and check sensors. That still needs testing.</text>
+  </g>
+</svg>

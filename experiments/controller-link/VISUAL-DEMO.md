@@ -2,6 +2,8 @@
 
 Two small applications demonstrate one question: **can the host establish a connection, send a command, and receive a matching reply?**
 
+For a simple meeting diagram showing what crosses the connection and where it goes, see [TCP explained](TCP-EXPLAINED.md).
+
 ## On one computer
 
 1. Run `run-visual.cmd` on Windows. It handles the Python environment and dependency, then opens two separate applications. Python must include Tkinter (normally provided by the standard Windows Python installer).

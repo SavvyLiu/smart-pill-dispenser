@@ -12,6 +12,8 @@ The controller draws a virtual compartment; it does not operate a motor. The hos
 
 See [the short visual walkthrough](VISUAL-DEMO.md) for the optional second-computer setup and a one-checkbox lost-reply test. The existing automated CLI experiment is still available below.
 
+[TCP explained: simple diagram and message example](TCP-EXPLAINED.md).
+
 ## Assumption and boundary
 
 We provisionally assume a future controller accepts newline-delimited messages over a bidirectional byte stream. No controller, display, board, operating system, or firmware protocol has been selected by this experiment.
