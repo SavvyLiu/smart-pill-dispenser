@@ -1,0 +1,50 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam sequenceMessageAlign center
+hide footbox
+
+actor User
+box "Host process"
+participant "Host application" as Host
+end box
+box "Controller process"
+participant "TCP listener" as Server
+participant "Controller model" as Controller
+end box
+
+User -> Host : Connect
+activate Host
+Host -> Server : TCP connect(address, 8765)
+Server --> Host : Connection established
+Host -> Server : STATUS(compartment_1, id)
+activate Server
+Server -> Controller : handle(request)
+activate Controller
+Controller --> Server : CLOSED
+deactivate Controller
+Server --> Host : response(id, CLOSED)
+deactivate Server
+Host -> Host : validate_response()
+Host --> User : CLOSED
+deactivate Host
+
+== Open compartment ==
+
+User -> Host : Open
+activate Host
+Host -> Server : OPEN(compartment_1, id)
+activate Server
+Server -> Controller : handle(request)
+activate Controller
+Controller -> Controller : state := OPENED
+Controller --> Server : OPENED
+deactivate Controller
+Server --> Host : response(id, OPENED)
+deactivate Server
+Host -> Host : validate_response()
+Host --> User : OPENED
+deactivate Host
+@enduml

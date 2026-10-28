@@ -2,6 +2,10 @@
 
 Code and engineering change tracking for our smart pill dispenser project.
 
+## Software feasibility experiments
+
+- [Controller communication](experiments/controller-link/README.md): run a host program and a separate simulated controller; check command exchanges and missing/invalid replies. Includes two small visual applications for meetings and an optional second-computer connection. No board is required; physical serial and the mechanism remain untested.
+
 ## Working pattern
 
 1. Open an issue describing the problem or proposed change, why it matters, who owns it, affected artifacts, and acceptance checks.
@@ -19,7 +23,7 @@ Issues marked `example` show the pattern. They are placeholders, not assigned wo
 
 ## Software
 
-Work on a branch and open a pull request linked to the issue. Explain what changed and include relevant test results. Pass applicable CI checks and obtain approval from at least one member other than the author who can assess the work. CI and branch protection are not configured yet.
+Work on a branch and open a pull request linked to the issue. Explain what changed and include relevant test results. Pass applicable CI checks and obtain approval from at least one member other than the author who can assess the work. The controller communication experiment has scoped CI checks; branch protection is not configured yet.
 
 ## Physical work and CAD
 
