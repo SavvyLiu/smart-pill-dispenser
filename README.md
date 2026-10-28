@@ -23,7 +23,7 @@ Issues marked `example` show the pattern. They are placeholders, not assigned wo
 
 ## Software
 
-Work on a branch and open a pull request linked to the issue. Explain what changed and include relevant test results. Pass applicable CI checks and obtain approval from at least one member other than the author who can assess the work. CI and branch protection are not configured yet.
+Work on a branch and open a pull request linked to the issue. Explain what changed and include relevant test results. Pass applicable CI checks and obtain approval from at least one member other than the author who can assess the work. The controller communication experiment has scoped CI checks; branch protection is not configured yet.
 
 ## Physical work and CAD
 
