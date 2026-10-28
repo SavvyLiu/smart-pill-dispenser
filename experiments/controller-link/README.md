@@ -12,7 +12,7 @@ The controller draws a virtual compartment; it does not operate a motor. The hos
 
 See [the short visual walkthrough](VISUAL-DEMO.md) for the optional second-computer setup and a one-checkbox lost-reply test. The existing automated CLI experiment is still available below.
 
-[TCP explained: simple diagram and message example](TCP-EXPLAINED.md).
+[TCP communication: UML sequence diagram](TCP-EXPLAINED.md).
 
 ## Assumption and boundary
 

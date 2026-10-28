@@ -2,7 +2,7 @@
 
 Two small applications demonstrate one question: **can the host establish a connection, send a command, and receive a matching reply?**
 
-For a simple meeting diagram showing what crosses the connection and where it goes, see [TCP explained](TCP-EXPLAINED.md).
+See the [UML sequence diagram](TCP-EXPLAINED.md) for the connection and command exchange.
 
 ## On one computer
 
