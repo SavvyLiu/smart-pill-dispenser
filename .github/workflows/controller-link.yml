@@ -1,0 +1,36 @@
+name: Controller communication experiment
+on:
+  push:
+    paths:
+      - 'experiments/controller-link/**'
+      - '.github/workflows/controller-link.yml'
+  pull_request:
+    paths:
+      - 'experiments/controller-link/**'
+      - '.github/workflows/controller-link.yml'
+permissions:
+  contents: read
+jobs:
+  experiment:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: experiments/controller-link
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: experiments/controller-link/requirements.txt
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python demo.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: controller-link-${{ matrix.os }}
+          path: experiments/controller-link/results/latest.json
